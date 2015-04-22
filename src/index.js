@@ -73,7 +73,7 @@ var InputPassword = React.createClass({
 
   infoStyle: {
     position: 'absolute',
-    bottom: -10,
+    top: '100%',
     width: '100%',
     overflow: 'hidden',
     height: 24
@@ -120,8 +120,8 @@ var InputPassword = React.createClass({
     });
 
     // call onChange prop passed from parent
-    if (this.props.onChange) {
-      this.props.onChange(val, this.state.isValid, this.state.score);
+    if ( this.props.onChange ) {
+        this.props.onChange(val, this.state.isValid, this.state.score);
     }
 
     if (this.props.toggleMask) {
@@ -223,17 +223,19 @@ var InputPassword = React.createClass({
 
     return (
       <div
-        style={{position: 'relative', display: 'inline-block'}}
-        className="passwordField"
+        style={{position: 'relative', marginBottom: '25px'}}
+        className="passwordField form-group"
         data-valid={this.state.isValid}
         data-score={this.state.score}
         data-entropy={this.state.entropy}
         >
+        <label className="control-label">{ this.props.label }</label>
         <input
           ref={this.props.id}
-          className="passwordField__input"
+          className="passwordField__input form-control"
           type={this.state.isPassword ? 'password' : 'text'}
           value={this.state.value}
+          placeholder={ this.props.placeholder ? this.props.placeholder : null }
           style={this.state.isPassword ? null : this.unMaskStyle}
           onChange={this.handleChange}
           {...props}
