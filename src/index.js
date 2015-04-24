@@ -5,8 +5,9 @@ var React = require('react'),
     config = require('./js/config'),
     debounce = require('lodash.debounce');
 
-var InputPassword = React.createClass({
+require('./js/zxcvbn.min.js');
 
+var InputPassword = React.createClass({
 
   /*==========  VALIDATE  ==========*/
 
@@ -182,22 +183,16 @@ var InputPassword = React.createClass({
     }
   },
 
-  componentWillMount() {
-    var zxcvbnSrc;
+    componentWillMount() {
 
-    // Load zxcvbn async if its enabled and doesn't already exist
-    if (this.props.zxcvbn && typeof zxcvbn === 'undefined') {
+        // set debouncer for password
+        if (this.props.toggleMask) {
+            this.maskPassword = debounce(this.addPasswordType, this.props.unMaskTime);
+        }
+    },
 
-      zxcvbnSrc = this.props.zxcvbn !== 'debug' ? this.props.zxcvbn : config.zxcvbnSrc;
-
-    // snippet to async load zxcvbn if enabled
-    (function(){var a;a=function(){var a,b;b=document.createElement("script");b.src=zxcvbnSrc;b.type="text/javascript";b.async=!0;a=document.getElementsByTagName("head")[0];return a.parentNode.insertBefore(b,a)};null!=window.attachEvent?window.attachEvent("onload",a):window.addEventListener("load",a,!1)}).call(this);
-    }
-
-    // set debouncer for password
-    if (this.props.toggleMask) {
-      this.maskPassword = debounce(this.addPasswordType, this.props.unMaskTime);
-    }
+  getValue() {
+    return this.state.value;
   },
 
   render() {
